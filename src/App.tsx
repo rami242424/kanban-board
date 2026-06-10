@@ -1,4 +1,4 @@
-import Card from "./components/Card";
+import Board from "./components/Board";
 import type { IBoard } from "./types";
 
 const initialBoards: IBoard = {
@@ -14,10 +14,7 @@ function App(){
       {
         Object.keys(initialBoards).map((boardName) => (
           <div key={boardName}>
-            <h2>{boardName}</h2>
-            {initialBoards[boardName].map((card) => (
-              <Card card={card}/>
-            ))}
+            <Board boardName={boardName} cards={initialBoards[boardName]}/>
           </div>
         ))}
     </div>
