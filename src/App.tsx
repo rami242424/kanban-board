@@ -1,7 +1,6 @@
-import Board from "./components/Board";
 import type { IBoard } from "./types";
 
-const initialBoards: IBoard = {
+const initialBoards:IBoard = {
   "TO DO": [{ id: 1, text: "영어단어 외우기" }],
   "DOING": [{ id: 2, text: "운동하기" }],
   "DONE": [{ id: 3, text: "밥먹기" }],
@@ -10,14 +9,16 @@ const initialBoards: IBoard = {
 
 function App(){
   return(
-    <div>
-      {
-        Object.keys(initialBoards).map((boardName) => (
-          <div key={boardName}>
-            <Board boardName={boardName} cards={initialBoards[boardName]}/>
-          </div>
-        ))}
-    </div>
+    <>
+      {Object.keys(initialBoards).map((boardName) => (
+        <>
+          <h2 key={boardName}>{boardName}</h2>
+          {initialBoards[boardName].map((board) => (
+            <div key={board.id}>{board.text}</div>
+          ))}
+        </>
+      ))}
+    </>
   );
 }
 
