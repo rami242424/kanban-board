@@ -15,8 +15,8 @@ function Board({boardName, cards}:IBoardProps){
       <Droppable droppableId={boardName}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            {cards.map((card) => (
-              <Card key={card.id} card={card}/>
+            {cards.map((card, index) => (
+              <Card key={card.id} card={card} index={index}/>
             ))}
             {provided.placeholder}
           </div>
