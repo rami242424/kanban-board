@@ -1,3 +1,4 @@
+import Board from "./components/Board";
 import type { IBoard } from "./types";
 
 const initialBoards:IBoard = {
@@ -10,12 +11,7 @@ function App(){
   return(
     <>
       {Object.keys(initialBoards).map((boardName) => (
-      <>
-        <h2>{boardName}</h2>
-        {initialBoards[boardName].map((cards) => (
-          <div key={cards.id}>{cards.text}</div>
-        ))}
-      </>
+      <Board boardName={boardName} cards={initialBoards[boardName]}/>
       ))}
     </>
   );
