@@ -1,24 +1,11 @@
-import { Draggable } from "@hello-pangea/dnd";
 import type { ICard } from "../types";
 
 interface ICardProps {
     card : ICard;
-    index : number;
 }
-
-function Card({card, index}:ICardProps){
+function Card({card}:ICardProps){
     return(
-        <Draggable draggableId={String(card.id)} index={index}>
-            {(provided) => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                >
-                    {card.text}
-                </div>
-            )}
-        </Draggable>
+        <div key={card.id}>{card.text}</div>
     );
 }
 
