@@ -1,18 +1,21 @@
-import Board from "./components/Board";
 import type { IBoard } from "./types";
 
-const initialBoards: IBoard = {
+const initialBoard:IBoard = {
   "TO DO": [{ id: 1, text: "영어단어 외우기" }],
   "DOING": [{ id: 2, text: "운동하기" }],
   "DONE": [{ id: 3, text: "밥먹기" }],
 }
 
-
 function App(){
-  return(
+  return (
     <>
-      {Object.keys(initialBoards).map((boardName) => (
-        <Board boardName={boardName} cards={initialBoards[boardName]}/>
+      {Object.keys(initialBoard).map((boardName) => (
+        <>
+          <h2>{boardName}</h2>
+          {initialBoard[boardName].map((card) => (
+            <div key={card.id}>{card.text}</div>
+          ))}
+        </>
       ))}
     </>
   );

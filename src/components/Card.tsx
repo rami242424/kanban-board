@@ -1,11 +1,6 @@
-import type { ICard } from "../types";
-
-interface ICardProps {
-    card : ICard;
-}
-function Card({card}:ICardProps){
+function Card(){
     return(
-        <div key={card.id}>{card.text}</div>
+        <></>
     );
 }
 
