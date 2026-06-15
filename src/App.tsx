@@ -8,13 +8,25 @@ function App(){
   const onDragEnd = (info:DropResult) => {
     const {source, destination} = info;
     if(!destination) return;
-    const copyBoard = [...boards[source.droppableId]];
-    const [card] = copyBoard.splice(source.index, 1);
-    copyBoard.splice(destination.index, 0, card);
-    setBoards({
-      ...boards,
-      [source.droppableId]: copyBoard,
-    });
+    if(source.droppableId === destination.droppableId){
+      const copyBoard = [...boards[source.droppableId]];
+      const [card] = copyBoard.splice(source.index, 1);
+      copyBoard.splice(destination.index, 0, card);
+      setBoards({
+        ...boards,
+        [source.droppableId]: copyBoard,
+      });
+    } else {
+      const copySourceBoard = [...boards[source.droppableId]];
+      const copyDestinationBoard = [...boards[destination.droppableId]];
+      const [card] = copySourceBoard.splice(source.index, 1);
+      copyDestinationBoard.splice(destination.index, 0, card);
+      setBoards({
+        ...boards,
+        [source.droppableId]: copySourceBoard,
+        [destination.droppableId]: copyDestinationBoard,
+      });
+    }
 
   }
   return(
