@@ -1,3 +1,4 @@
+import { Droppable } from "@hello-pangea/dnd";
 import type { ICard } from "../types";
 import Card from "./Card";
 
@@ -7,12 +8,19 @@ interface IBoardProps {
 }
 function Board({boardName, cards}:IBoardProps){
   return(
-    <>
+    <div>
       <h2>{boardName}</h2>
-        {cards.map((card) => (
-          <Card card={card}/>
-        ))}
-    </>
+      <Droppable droppableId={boardName}>
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            {cards.map((card, index) => (
+              <Card key={card.id} card={card} index={index}/>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </div>
   );
 }
 

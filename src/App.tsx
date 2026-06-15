@@ -1,19 +1,28 @@
+import { useRecoilState } from "recoil";
 import Board from "./components/Board";
-import type { IBoard } from "./types";
-
-const initialBoard:IBoard = {
-  "TO DO": [{ id: 1, text: "영어단어 외우기" }],
-  "DOING": [{ id: 2, text: "운동하기" }],
-  "DONE": [{ id: 3, text: "밥먹기" }],
-}
+import { boardsState } from "./atoms";
+import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 
 function App(){
-  return (
-    <>
-      {Object.keys(initialBoard).map((boardName) => (
-        <Board boardName={boardName} cards={initialBoard[boardName]}/>
+  const [boards, setBoards] = useRecoilState(boardsState);
+  const onDragEnd = (info:DropResult) => {
+    const {source, destination} = info;
+    if(!destination) return;
+    const copyBoard = [...boards[source.droppableId]];
+    const [card] = copyBoard.splice(source.index, 1);
+    copyBoard.splice(destination.index, 0, card);
+    setBoards({
+      ...boards,
+      [source.droppableId]: copyBoard,
+    });
+
+  }
+  return(
+    <DragDropContext onDragEnd={onDragEnd}>
+      {Object.keys(boards).map((boardName) => (
+        <Board boardName={boardName} cards={boards[boardName]}/>
       ))}
-    </>
+    </DragDropContext>
   );
 }
 
