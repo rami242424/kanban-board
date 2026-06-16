@@ -6,6 +6,7 @@ interface IBoardProps {
   boardName: string;
   cards: ICard[];
 }
+
 function Board({boardName, cards}:IBoardProps){
   return(
     <div>
@@ -19,6 +20,7 @@ function Board({boardName, cards}:IBoardProps){
             {provided.placeholder}
           </div>
         )}
+
       </Droppable>
     </div>
   );
