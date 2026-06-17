@@ -1,6 +1,6 @@
 import { Draggable } from "@hello-pangea/dnd";
 import type { ICard } from "../types";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { boardsState } from "../atoms";
 
 interface ICardProps {
@@ -10,7 +10,7 @@ interface ICardProps {
 }
 
 function Card({card, index, boardName}:ICardProps){
-    const [boards, setBoards] = useRecoilState(boardsState);
+    const setBoards = useSetRecoilState(boardsState);
     const onDelete = () => {
         setBoards((prev) => ({
             ...prev,
