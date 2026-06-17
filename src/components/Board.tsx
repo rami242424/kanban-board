@@ -10,7 +10,7 @@ interface IBoardProps {
   cards: ICard[];
 }
 
-interface IForm {
+export interface IForm {
   text: string;
 }
 
@@ -19,7 +19,7 @@ function Board({boardName, cards}:IBoardProps){
   const { register, handleSubmit, setValue } = useForm<IForm>();
   const onValid = (data: IForm) => {
     const newCard = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       text: data.text
     }
     setBoards((prev) => ({
@@ -31,6 +31,13 @@ function Board({boardName, cards}:IBoardProps){
   return(
     <div>
       <h2>{boardName}</h2>
+      <form onSubmit={handleSubmit(onValid)}>
+        <input 
+          {...register("text", { required: true })}
+          placeholder={`${boardName}에 추가`}
+        />
+        <button>추가</button>
+      </form>
       <Droppable droppableId={boardName}>
         {(provided) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
