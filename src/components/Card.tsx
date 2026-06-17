@@ -25,12 +25,11 @@ function Card({card, index, boardName}:ICardProps){
                 {...provided.draggableProps}
                 ref={provided.innerRef}
             >
-                <div>{card.text}</div>
-                <button onClick={onDelete}>삭제</button>
+                <div>{card.text}<button onClick={onDelete}>삭제</button></div>
             </div>
         )}
     </Draggable>
-  );
+    );
 }
 
 export default Card;
