@@ -2,6 +2,20 @@ import { useRecoilState } from "recoil";
 import { boardsState } from "./atoms";
 import Board from "./components/Board";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
+import styled from "styled-components";
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: ${(props) => props.theme.bgColor};
+`;
+const Boards = styled.div`
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+`;
 
 function App(){
   const [boards, setBoards] = useRecoilState(boardsState);
@@ -31,9 +45,13 @@ function App(){
 
   return(
     <DragDropContext onDragEnd={onDragEnd}>
-      {Object.keys(boards).map((boardName) => (
-        <Board key={boardName} boardName={boardName} cards={boards[boardName]}/>
-      ))}
+      <Wrapper>
+        <Boards>
+          {Object.keys(boards).map((boardName) => (
+            <Board key={boardName} boardName={boardName} cards={boards[boardName]}/>
+          ))}
+        </Boards>
+      </Wrapper>
     </DragDropContext>
   );
 }
