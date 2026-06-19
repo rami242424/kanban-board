@@ -45,10 +45,16 @@ const AddButton = styled.button`
   cursor: pointer;
 `;
 
-const CardList = styled.div`
+const CardList = styled.div<{ $isDraggingOver: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  min-height: 60px;
+  background: ${(props) =>
+    props.$isDraggingOver ? "rgba(99, 102, 241, 0.15)" : "transparent"};
+  transition: background 0.2s ease;
 `;
 
 
@@ -86,8 +92,12 @@ function Board({boardName, cards}:IBoardProps){
         <AddButton>추가</AddButton>
       </Form>
       <Droppable droppableId={boardName}>
-        {(provided) => (
-          <CardList ref={provided.innerRef} {...provided.droppableProps}>
+        {(provided, snapshot) => (
+          <CardList 
+            ref={provided.innerRef} 
+            {...provided.droppableProps}
+            $isDraggingOver ={snapshot.isDraggingOver}
+          >
             {cards.map((card, index) => (
               <Card key={card.id} card={card} index={index} boardName={boardName}/>
             ))}
