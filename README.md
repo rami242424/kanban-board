@@ -19,36 +19,38 @@
 
 ## 📸 화면 구성
 
-<!-- 스크린샷 또는 드래그 GIF를 넣으세요 (예: screenshot_board.png, demo.gif) -->
+**보드 화면**
 
-| 보드                   | 드래그     |
-| ---------------------- | ---------- |
-| (screenshot_board.png) | (demo.gif) |
+![보드 화면](./screenshot_board.png)
+
+**드래그 앤 드롭**
+
+![드래그 데모](./demo.gif)
 
 ---
 
 ## 📌 주요 기능
 
-- 보드별 카드 추가 / 수정 / 삭제 (CRUD)
-- 같은 보드 내 카드 순서 변경
-- 다른 보드로 카드 이동
-- 드래그 중인 카드와 드롭 가능한 영역에 시각적 표시
-- 작업 내용을 localStorage에 저장해 새로고침 후에도 유지
-- 빈 값 카드 추가 방지 (유효성 검사)
+* 보드별 카드 추가 / 수정 / 삭제 (CRUD)
+* 같은 보드 내 카드 순서 변경
+* 다른 보드로 카드 이동
+* 드래그 중인 카드와 드롭 가능한 영역에 시각적 표시
+* 작업 내용을 localStorage에 저장해 새로고침 후에도 유지
+* 빈 값 카드 추가 방지 (유효성 검사)
 
 ---
 
 ## 🛠 기술 스택
 
-| 역할           | 기술                   |
-| -------------- | ---------------------- |
-| 빌드 도구      | Vite                   |
-| 언어           | TypeScript             |
-| UI             | React 18               |
-| 상태 관리      | Recoil, recoil-persist |
-| 드래그 앤 드롭 | @hello-pangea/dnd      |
-| 폼 관리        | react-hook-form        |
-| 스타일         | styled-components      |
+| 역할 | 기술 |
+| --- | --- |
+| 빌드 도구 | Vite |
+| 언어 | TypeScript |
+| UI | React 18 |
+| 상태 관리 | Recoil, recoil-persist |
+| 드래그 앤 드롭 | @hello-pangea/dnd |
+| 폼 관리 | react-hook-form |
+| 스타일 | styled-components |
 
 ---
 
