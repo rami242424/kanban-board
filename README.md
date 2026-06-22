@@ -1,37 +1,64 @@
-# Kanban Board
+# 📋 Kanban Board
 
-드래그 앤 드롭으로 할 일을 관리하는 칸반 보드입니다. 카드를 생성·수정·삭제하고, 보드 안과 보드 사이로 자유롭게 옮길 수 있으며, 작업 내용은 브라우저에 저장되어 새로고침 후에도 유지됩니다.
+> 드래그 앤 드롭으로 할 일을 관리하는 칸반 보드
 
-**배포:** https://kanban-board-nu-ruby.vercel.app/
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite)
+![Recoil](https://img.shields.io/badge/Recoil-0.7-3578E5?logo=recoil)
+![dnd](https://img.shields.io/badge/@hello--pangea/dnd-18-0055CC)
+![styled-components](https://img.shields.io/badge/styled--components-6-DB7093?logo=styledcomponents)
 
-<!-- 여기에 드래그하는 GIF 또는 스크린샷을 넣으면 좋습니다 -->
+---
 
-## 주요 기능
+## 📎 배포 링크
 
-- **카드 CRUD** — 각 보드에서 카드 추가, 수정, 삭제
-- **드래그 앤 드롭** — 같은 보드 내 순서 변경 및 보드 간 카드 이동
-- **상태 영속화** — 작업 내용을 localStorage에 저장하여 새로고침 후에도 유지
-- **드래그 피드백** — 드래그 중인 카드와 드롭 가능한 영역에 시각적 표시
+🔗 [Kanban Board 바로가기](https://kanban-board-nu-ruby.vercel.app/)
 
-## 기술 스택
+---
 
-| 분류           | 사용 기술              |
+## 📸 화면 구성
+
+<!-- 스크린샷 또는 드래그 GIF를 넣으세요 (예: screenshot_board.png, demo.gif) -->
+
+| 보드                   | 드래그     |
+| ---------------------- | ---------- |
+| (screenshot_board.png) | (demo.gif) |
+
+---
+
+## 📌 주요 기능
+
+- 보드별 카드 추가 / 수정 / 삭제 (CRUD)
+- 같은 보드 내 카드 순서 변경
+- 다른 보드로 카드 이동
+- 드래그 중인 카드와 드롭 가능한 영역에 시각적 표시
+- 작업 내용을 localStorage에 저장해 새로고침 후에도 유지
+- 빈 값 카드 추가 방지 (유효성 검사)
+
+---
+
+## 🛠 기술 스택
+
+| 역할           | 기술                   |
 | -------------- | ---------------------- |
 | 빌드 도구      | Vite                   |
 | 언어           | TypeScript             |
-| 프레임워크     | React 18               |
+| UI             | React 18               |
 | 상태 관리      | Recoil, recoil-persist |
 | 드래그 앤 드롭 | @hello-pangea/dnd      |
 | 폼 관리        | react-hook-form        |
-| 스타일링       | styled-components      |
+| 스타일         | styled-components      |
 
-## 폴더 구조
+---
+
+## 📁 프로젝트 구조
 
 ```
 src/
 ├── components/
-│   ├── Board.tsx    # 보드 단위 컴포넌트 (카드 추가 폼 + Droppable 영역)
-│   └── Card.tsx     # 카드 단위 컴포넌트 (Draggable + 수정/삭제)
+│   ├── Board.tsx    # 보드 컴포넌트 (카드 추가 폼 + Droppable 영역)
+│   └── Card.tsx     # 카드 컴포넌트 (Draggable + 수정 / 삭제)
 ├── atoms.ts         # Recoil atom + recoil-persist 설정
 ├── theme.ts         # styled-components 테마 (색상 토큰)
 ├── styled.d.ts      # 테마 타입 정의
@@ -39,60 +66,79 @@ src/
 └── App.tsx          # DragDropContext + onDragEnd 로직
 ```
 
-## 핵심 구현
+---
 
-### 상태 구조
+## 🔧 구현 포인트
 
-보드 전체를 `{ 보드이름: 카드배열 }` 형태의 객체 하나로 관리합니다. 각 카드는 고유 `id`와 `text`를 가지며, 보드 이름을 키로 사용해 어떤 보드에 속한 카드인지 구분합니다.
+### 드래그 출발지·도착지를 비교해 이동 처리
 
-```ts
-interface IBoard {
-  [boardName: string]: ICard[];
+`onDragEnd`에서 드래그 결과의 출발지(source)와 도착지(destination)를 비교해 두 경우로 나눠 처리합니다. 같은 보드 안에서 옮길 때는 해당 배열에서 카드를 빼낸 뒤 새 위치에 끼워 넣고, 다른 보드로 옮길 때는 출발 보드에서 제거하고 도착 보드에 삽입합니다. 상태를 직접 수정하지 않고 배열을 복사해 갱신하는 방식으로 불변성을 유지했습니다.
+
+```
+const { source, destination } = info;
+if (!destination) return;
+if (source.droppableId === destination.droppableId) {
+  // 같은 보드 내 순서 변경
+} else {
+  // 다른 보드로 이동
 }
 ```
 
-### 드래그 앤 드롭 처리
+---
 
-`onDragEnd`에서 드래그 출발지(source)와 도착지(destination)를 비교해 두 경우로 나눠 처리합니다.
+### Droppable 영역에는 transform 대신 배경색 변화
 
-- **같은 보드 내 이동** — 해당 보드 배열에서 카드를 빼낸 뒤 새 위치에 삽입
-- **다른 보드로 이동** — 출발 보드에서 카드를 제거하고 도착 보드에 삽입
+드래그 중 보드 영역에 입체감을 주려고 Droppable 컨테이너에 `transform: scale()`을 적용하니, 카드가 마우스를 제대로 따라오지 않고 드롭 위치가 어긋났습니다. `@hello-pangea/dnd`는 요소의 픽셀 좌표를 측정해 드래그 위치를 계산하는데, 컨테이너에 `transform`을 주면 좌표계가 변형되어 계산 결과와 실제 위치가 어긋나는 것이 원인이었습니다.
 
-상태를 직접 수정하지 않고 배열을 복사해 갱신하는 방식(불변성 유지)으로 처리했습니다.
+Droppable 영역에는 좌표에 영향을 주지 않는 `background` 색상 변화로 `isDraggingOver` 상태를 표시했고, 그림자·확대 같은 입체 효과는 개별 카드(Draggable)에만 적용했습니다.
 
-### 상태 영속화
+```
+// 보드: 좌표에 영향 없는 배경색으로 표시
+background: ${props => props.$isDraggingOver ? "rgba(99,102,241,0.15)" : "transparent"};
+
+// 카드: 입체 효과는 여기에만
+transform: ${props => props.$isDragging ? "scale(1.02)" : "none"};
+```
+
+---
+
+### styled-components transient prop으로 DOM 경고 방지
+
+드래그 상태(`isDragging`)를 styled-components에 내려줄 때 일반 prop으로 전달하면, styled-components가 이를 실제 DOM 요소의 HTML 속성으로 넘기려다 React가 알 수 없는 속성이라고 경고를 띄웁니다. `$` 접두사를 붙인 transient prop(`$isDragging`)으로 전달해 스타일 계산에만 쓰이고 DOM에는 노출되지 않도록 했습니다.
+
+```
+<Wrapper $isDragging={snapshot.isDragging} ... >
+```
+
+---
+
+### recoil-persist로 상태 영속화
 
 `recoil-persist`를 atom에 연결해 상태 변화를 localStorage에 자동 저장합니다. 앱을 다시 열면 저장된 값을 복원하므로 새로고침이나 재방문 후에도 작업 내용이 유지됩니다.
 
-### 폼 관리
+이 과정에서 atom의 `default`를 비웠는데도 화면에 이전 카드가 남는 현상을 겪었습니다. `recoil-persist`가 앱 시작 시 `default`보다 localStorage에 저장된 값을 우선 복원하기 때문이었고, 저장 값을 제거하자 변경된 `default`가 정상 반영됐습니다.
 
-카드 추가와 수정 모두 `react-hook-form`으로 처리합니다. `register`로 입력값을 관리하고, 빈 값 제출을 막기 위한 `required` 유효성 검사를 적용했습니다.
+```
+const { persistAtom } = recoilPersist();
 
-## 트러블슈팅
-
-### 1. Droppable 영역의 transform이 드래그를 방해하는 문제
-
-드래그 중 보드 영역에 입체감을 주려고 `CardList`(Droppable 컨테이너)에 `transform: scale()`을 적용하니, 카드가 마우스를 제대로 따라오지 않고 드롭 위치가 어긋났습니다.
-
-`@hello-pangea/dnd`는 요소의 픽셀 좌표를 측정해 드래그 위치를 계산하니, 컨테이너에 `transform`을 주면 좌표계가 변형되어 계산 결과와 실제 화면 위치가 어긋나는 것이 원인이었습니다.
-
-해결책으로 Droppable 영역에서는 좌표에 영향을 주지 않는 `background` 색상 변화로 `isDraggingOver` 상태를 표시했고, 입체 효과(그림자·scale)는 개별 카드(Draggable)에만 적용했습니다.
-
-### 2. atom default를 수정해도 화면이 바뀌지 않는 문제
-
-초기 카드 데이터를 비우기 위해 atom의 `default`를 빈 배열로 수정했으나, 화면에는 이전 카드가 그대로 표시됐습니다.
-
-`recoil-persist`가 상태를 localStorage에 저장하고, 앱 시작 시 `default`보다 저장된 값을 우선 복원하기 때문이었습니다. localStorage의 저장 값을 제거하자 변경된 `default`가 정상 반영되는 것을 확인했습니다.
-
-## 로컬 실행
-
-```bash
-npm install
-npm run dev
+export const boardsState = atom<IBoard>({
+  key: "boardsState",
+  default: { "TO DO": [], "DOING": [], "DONE": [] },
+  effects_UNSTABLE: [persistAtom],
+});
 ```
 
-빌드:
+---
 
-```bash
+## 🚀 시작하기
+
+```
+# 패키지 설치
+npm install
+
+# 개발 서버 실행
+npm run dev
+
+# 프로덕션 빌드
 npm run build
 ```
