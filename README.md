@@ -1,4 +1,4 @@
-# 📋 Kanban Board
+# 📋Kanban Board
 
 > 드래그 앤 드롭으로 할 일을 관리하는 칸반 보드
 
